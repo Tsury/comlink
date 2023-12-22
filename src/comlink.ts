@@ -609,10 +609,17 @@ function handleMessage(ev: MessageEvent) {
     }
 }
 
-function requestResponseMessage(ep: Endpoint, msg: Message, transfers?: Transferable[]) {
+function requestResponseMessage(
+  ep: Endpoint,
+  msg: Message,
+  transfers?: Transferable[]
+): Promise<WireValue> {
     return new Promise((resolve) => {
         const id = generateUUID();
         messageResolvers.set(id, resolve);
+        if (ep.start) {
+          ep.start();
+        }
         ep.postMessage({ id, ...msg }, transfers);
     });
 }
