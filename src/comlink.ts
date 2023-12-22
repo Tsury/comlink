@@ -595,10 +595,10 @@ function fromWireValue(value: WireValue): any {
   }
 }
 
-const messageResolvers = new Map();
+const messageResolvers: Map<string, (value: WireValue | PromiseLike<WireValue>) => void> = new Map();
 
-function handleMessage(ev: MessageEvent) {
-    const { data } = ev;
+function handleMessage(ev: Event) {
+    const { data } = ev as MessageEvent;
     if (!data || !data.id) {
       return;
     }
